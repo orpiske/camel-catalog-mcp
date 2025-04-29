@@ -32,7 +32,7 @@ public class InformationTool {
         return ToolResponse.success(reply.toString());
     }
 
-    @Tool(description = "Provide information about an the configuration options provided by an Apache Camel component")
+    @Tool(description = "Provide information about the configuration options provided by an Apache Camel component")
     public ToolResponse getInformationAboutComponentOptions(@ToolArg(description = "The name of the component to get information for") String componentName) {
         final String s = catalog.listComponentsAsJson();
         final ComponentModel componentModel = catalog.componentModel(componentName.toLowerCase());
