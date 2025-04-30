@@ -39,11 +39,13 @@ public class ListTool {
 
 
     @Tool(description = "List Apache Camel components available in the latest version")
-    ToolResponse listComponents(@ToolArg(description = "Page number (to set the starting page for the results - starts with 0)", required = false) int page) {
+    ToolResponse listComponents(@ToolArg(description = "Page number (to set the starting page for the results - starts with 0)", required = false) Integer pageObj) {
         final String s = catalog.listComponentsAsJson();
         JsonArray catalogInformation = new JsonArray(s);
         JsonObject reply = new JsonObject();
         JsonArray smallerArray = new JsonArray();
+
+        int page = pageObj == null ? 0 : pageObj;
 
         int numPages = catalogInformation.size() % pageSize;
         if (page > numPages) {
