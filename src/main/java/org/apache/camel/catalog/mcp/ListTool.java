@@ -66,17 +66,17 @@ public class ListTool {
     }
 
     @Tool(description = "List Apache Camel dataFormats for the latest version")
-    ToolResponse listDataFormats() {
+    ToolResponse listDataFormats(@ToolArg(description = "Version (unused)") String version) {
         return list(catalog::listDataFormatsAsJson);
     }
 
     @Tool(description = "List Apache Camel languages (DSLs)")
-    ToolResponse listLanguages() {
+    ToolResponse listLanguages(@ToolArg(description = "Version (unused)") String version) {
         return list(catalog::listLanguagesAsJson);
     }
 
     @Tool(description = "List Apache Camel transformers")
-    ToolResponse listTransformers() {
+    ToolResponse listTransformers(@ToolArg(description = "Version (unused)") String version) {
         return list(catalog::listTransformersAsJson);
     }
 }
