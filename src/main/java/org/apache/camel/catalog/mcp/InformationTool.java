@@ -113,5 +113,18 @@ public class InformationTool {
         return ToolResponse.success(reply.toString());
     }
 
+    @Tool(description = "Provide dependency information about component for using with Maven or Gradle")
+    public ToolResponse getDependency(
+            @ToolArg(description = "The name of the component to get the dependency information for") String componentName) {
+        final ComponentModel componentModel = catalog.componentModel(componentName.toLowerCase());
+
+        JsonObject reply = new JsonObject();
+        reply.put("groupId", componentModel.getGroupId());
+        reply.put("artifactId", componentModel.getArtifactId());
+        reply.put("version", componentModel.getVersion());
+
+        return ToolResponse.success(reply.toString());
+    }
+
 
 }
