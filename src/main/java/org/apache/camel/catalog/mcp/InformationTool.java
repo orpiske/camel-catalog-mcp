@@ -15,7 +15,6 @@ public class InformationTool {
 
     @Tool(description = "Provide information about an specific Apache Camel component")
     public ToolResponse getInformationAboutComponent(@ToolArg(description = "The name of the component to get information for") String componentName) {
-        final String s = catalog.listComponentsAsJson();
         final ComponentModel componentModel = catalog.componentModel(componentName.toLowerCase());
 
         JsonObject reply = new JsonObject();
@@ -56,7 +55,6 @@ public class InformationTool {
     public ToolResponse getInformationAboutSpecificComponentOptions(
             @ToolArg(description = "The name of the component to get information for") String componentName,
             @ToolArg(description = "The name of the option to get information for") String optionName) {
-        final String s = catalog.listComponentsAsJson();
         final ComponentModel componentModel = catalog.componentModel(componentName.toLowerCase());
 
         JsonObject reply = new JsonObject();
@@ -99,7 +97,6 @@ public class InformationTool {
     public ToolResponse getInformationAboutSpecificEndpointOptions(
             @ToolArg(description = "The name of the component to get information for") String componentName,
             @ToolArg(description = "The name of the option to get information for") String optionName) {
-        final String s = catalog.listComponentsAsJson();
         final ComponentModel componentModel = catalog.componentModel(componentName.toLowerCase());
 
         JsonObject reply = new JsonObject();
