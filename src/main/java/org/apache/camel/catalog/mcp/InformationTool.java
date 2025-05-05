@@ -5,7 +5,9 @@ import io.quarkiverse.mcp.server.ToolArg;
 import io.quarkiverse.mcp.server.ToolResponse;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.camel.catalog.CamelCatalog;
 import org.apache.camel.catalog.DefaultCamelCatalog;
 import org.apache.camel.tooling.model.ComponentModel;
@@ -126,5 +128,16 @@ public class InformationTool {
         return ToolResponse.success(reply.toString());
     }
 
+    @Tool(description = "Get the URL for the documentation of an Apache Camel component")
+    public ToolResponse getComponentURL(
+            @ToolArg(description = "The name of the component to get the documentation for") String componentName) {
+        final ComponentModel componentModel = catalog.componentModel(componentName.toLowerCase());
 
+        String page = "https://camel.apache.org/components/4.10.x/" + componentModel.getName() + "-component.html";
+
+        JsonObject reply = new JsonObject();
+        reply.put("page", page);
+
+        return ToolResponse.success(reply.toString());
+    }
 }
