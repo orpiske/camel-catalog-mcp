@@ -1,4 +1,4 @@
-package org.apache.camel.catalog.mcp;
+package net.orpiske.camel.catalog.mcp;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

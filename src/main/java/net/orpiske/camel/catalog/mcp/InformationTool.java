@@ -1,4 +1,4 @@
-package org.apache.camel.catalog.mcp;
+package net.orpiske.camel.catalog.mcp;
 
 import io.quarkiverse.mcp.server.Tool;
 import io.quarkiverse.mcp.server.ToolArg;
