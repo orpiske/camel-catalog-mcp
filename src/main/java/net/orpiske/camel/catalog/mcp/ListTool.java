@@ -27,7 +27,7 @@ public class ListTool {
         }
     }
 
-    @Tool(description = "Calculate the number of pages required to retrieve all results of a certain type")
+    @Tool(description = "Calculates the total number of pages for a 'listComponents' query")
     ToolResponse calculateComponentPages(@ToolArg(description = "Version (unused)") String version) {
         final String s = catalog.listComponentsAsJson();
         JsonArray catalogInformation = new JsonArray(s);
@@ -38,8 +38,8 @@ public class ListTool {
     }
 
 
-    @Tool(description = "List Apache Camel components available in the latest version")
-    ToolResponse listComponents(@ToolArg(description = "Page number (to set the starting page for the results - starts with 0)", required = false) Integer pageObj) {
+    @Tool(description = "Lists available Apache Camel components from the latest stable version. The results are paginated.")
+    ToolResponse listComponents(@ToolArg(description = "Optional: The page number for the results, starting from 0. Defaults to 0 (the first page) if omitted.", required = false) Integer pageObj) {
         final String s = catalog.listComponentsAsJson();
         JsonArray catalogInformation = new JsonArray(s);
         JsonObject reply = new JsonObject();
@@ -67,17 +67,17 @@ public class ListTool {
         return ToolResponse.success(reply.toString());
     }
 
-    @Tool(description = "List Apache Camel dataFormats for the latest version")
+    @Tool(description = "Retrieves a list of all available Apache Camel data formats from the latest stable version. This tool does not support filtering")
     ToolResponse listDataFormats(@ToolArg(description = "Version (unused)") String version) {
         return list(catalog::listDataFormatsAsJson);
     }
 
-    @Tool(description = "List Apache Camel languages (DSLs)")
+    @Tool(description = "Retrieves a list of all available Apache Camel Domain-specific languages (DSL) from the latest stable version. This tool does not support filtering")
     ToolResponse listLanguages(@ToolArg(description = "Version (unused)") String version) {
         return list(catalog::listLanguagesAsJson);
     }
 
-    @Tool(description = "List Apache Camel transformers")
+    @Tool(description = "Retrieves a list of all available Apache Camel transformers from the latest stable version. This tool does not support filtering")
     ToolResponse listTransformers(@ToolArg(description = "Version (unused)") String version) {
         return list(catalog::listTransformersAsJson);
     }

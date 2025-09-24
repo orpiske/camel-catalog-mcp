@@ -5,9 +5,7 @@ import io.quarkiverse.mcp.server.ToolArg;
 import io.quarkiverse.mcp.server.ToolResponse;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.orpiske.camel.catalog.mcp.exceptions.ComponentNotFoundException;
 import org.apache.camel.catalog.CamelCatalog;
 import org.apache.camel.catalog.DefaultCamelCatalog;
@@ -16,8 +14,8 @@ import org.apache.camel.tooling.model.ComponentModel;
 public class InformationTool {
     CamelCatalog catalog = new DefaultCamelCatalog(true);
 
-    @Tool(description = "Provide information about an specific Apache Camel component")
-    public ToolResponse getInformationAboutComponent(@ToolArg(description = "The name of the component to get information for") String componentName) {
+    @Tool(description = "Fetches detailed documentation for a specific Apache Camel component. Use this to understand its purpose, support level, maven artifact, headers, and URI syntax.")
+    public ToolResponse getInformationAboutComponent(@ToolArg(description = "The scheme name of the component. For example: 'file', 'kafka', or 'jms'.") String componentName) {
         final ComponentModel componentModel;
         try {
             componentModel = findComponent(componentName);
@@ -35,12 +33,14 @@ public class InformationTool {
         reply.put("groupId", componentModel.getGroupId());
         reply.put("artifactId", componentModel.getArtifactId());
         reply.put("version", componentModel.getVersion());
+        reply.put("syntax", componentModel.getSyntax());
 
         return ToolResponse.success(reply.toString());
     }
 
-    @Tool(description = "Provide information about the configuration options provided by an Apache Camel component")
-    public ToolResponse getInformationAboutComponentOptions(@ToolArg(description = "The name of the component to get information for") String componentName) {
+
+    // This confuses the models, so have become an option of the getInfomrationAboutComponent
+    private ToolResponse getInformationAboutComponentOptions(String componentName) {
         final ComponentModel componentModel;
         try {
             componentModel = findComponent(componentName);
@@ -64,10 +64,8 @@ public class InformationTool {
         return ToolResponse.success(reply.toString());
     }
 
-    @Tool(description = "Provide information about an specific configuration option provided by an Apache Camel component")
-    public ToolResponse getInformationAboutSpecificComponentOptions(
-            @ToolArg(description = "The name of the component to get information for") String componentName,
-            @ToolArg(description = "The name of the option to get information for") String optionName) {
+
+    private ToolResponse getInformationAboutSpecificComponentOption(String componentName, String optionName) {
         final ComponentModel componentModel;
         try {
             componentModel = findComponent(componentName);
@@ -90,14 +88,20 @@ public class InformationTool {
     }
 
 
-    @Tool(description = "Provide information about the endpoint options provided by an Apache Camel component")
-    public ToolResponse getInformationAboutQueryParameterOptions(@ToolArg(description = "The name of the component to get information for") String componentName) {
+    @Tool(description = "Lists all configurable options for a specific Apache Camel component. It can filter by type: 'component' properties or 'endpoint' URI parameters.")
+    public ToolResponse getInformationAboutOptions(@ToolArg(description = "The scheme name of the component. For example: 'file' or 'http'.") String componentName, @ToolArg(description = "The category of options to list: 'component' (bean properties) or 'endpoint' (URI parameters). Defaults to 'endpoint'.", defaultValue = "endpoint") String category) {
+        if (category.equals("component")) {
+            return getInformationAboutComponentOptions(componentName);
+        }
+
         final ComponentModel componentModel;
         try {
             componentModel = findComponent(componentName);
         } catch (ComponentNotFoundException e) {
             return ToolResponse.error(e.getMessage());
         }
+
+
 
         JsonObject reply = new JsonObject();
         JsonArray array = new JsonArray();
@@ -116,10 +120,16 @@ public class InformationTool {
         return ToolResponse.success(reply.toString());
     }
 
-    @Tool(description = "Provide information about an specific configuration option provided by an Apache Camel endpoint option")
-    public ToolResponse getInformationAboutSpecificEndpointOptions(
-            @ToolArg(description = "The name of the component to get information for") String componentName,
-            @ToolArg(description = "The name of the option to get information for") String optionName) {
+    @Tool(description = "Fetches detailed properties of a single, named configuration option for an Apache Camel component. Can be filtered by category ('component' or 'endpoint'). It returns details like the option's data type, default value, and description.")
+    public ToolResponse getInformationAboutSpecificOption(
+            @ToolArg(description = "The scheme name of the component. For example: 'file', 'kafka', or 'jms'.") String componentName,
+            @ToolArg(description = "The exact, case-sensitive name of the option to look up. For example: 'fileName' or 'bridgeErrorHandler'.") String optionName,
+            @ToolArg(description = "The category of the option: 'component' for bean properties or 'endpoint' for URI parameters. Defaults to 'endpoint'.", defaultValue = "endpoint") String category) {
+
+        if (category.equals("component")) {
+            return getInformationAboutSpecificComponentOption(componentName, optionName);
+        }
+
         final ComponentModel componentModel;
         try {
             componentModel = findComponent(componentName);
@@ -141,9 +151,9 @@ public class InformationTool {
         return ToolResponse.success(reply.toString());
     }
 
-    @Tool(description = "Provide dependency information about component for using with Maven or Gradle")
+    @Tool(description = "Fetches the Maven and Gradle dependency snippets for a specific Apache Camel component. Use this to find the correct code to add to a project's build file.")
     public ToolResponse getDependency(
-            @ToolArg(description = "The name of the component to get the dependency information for") String componentName) {
+            @ToolArg(description = "The scheme name of the component. For example: 'file', 'kafka', or 'jms'.") String componentName) {
         final ComponentModel componentModel;
         try {
             componentModel = findComponent(componentName);
@@ -176,9 +186,9 @@ public class InformationTool {
         return componentModel;
     }
 
-    @Tool(description = "Get the URL for the documentation of an Apache Camel component")
+    @Tool(description = "Fetches the URL for the official documentation page of a specific Apache Camel component. Use this when the user asks for a direct link.")
     public ToolResponse getComponentURL(
-            @ToolArg(description = "The name of the component to get the documentation for") String componentName) {
+            @ToolArg(description = "The scheme name of the component. For example: 'file', 'kafka', or 'jms'.") String componentName) {
         final ComponentModel componentModel;
         try {
             componentModel = findComponent(componentName);
