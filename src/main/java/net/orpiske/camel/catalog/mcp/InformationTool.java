@@ -186,9 +186,9 @@ public class InformationTool {
             return ToolResponse.error(e.getMessage());
         }
 
+        final String baseVersion = componentModel.getVersion().substring(0, 4);
 
-
-        String page = "https://camel.apache.org/components/4.14.x/" + componentModel.getName() + "-component.html";
+        String page = "https://camel.apache.org/components/" + baseVersion + ".x/" + componentModel.getName() + "-component.html";
 
         JsonObject reply = new JsonObject();
         reply.put("page", page);
