@@ -36,4 +36,4 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          mvn -PPackage -B --file pom.xml -Dtag=camel-catalog-mcp-${{ github.event.inputs.currentDevelopmentVersion }} -DreleaseVersion=${{ github.event.inputs.currentDevelopmentVersion }} -DdevelopmentVersion=${{ github.event.inputs.nextDevelopmentVersion }}-SNAPSHOT release:prepare release:perform -Dgoals=install
+          mvn -PDist -B --file pom.xml -Dtag=camel-catalog-mcp-${{ github.event.inputs.currentDevelopmentVersion }} -DreleaseVersion=${{ github.event.inputs.currentDevelopmentVersion }} -DdevelopmentVersion=${{ github.event.inputs.nextDevelopmentVersion }}-SNAPSHOT release:prepare release:perform -Dgoals=install
