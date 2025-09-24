@@ -35,7 +35,7 @@
         <quarkus.platform.version>3.26.4</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.4</surefire-plugin.version>
-        <quarkus-mcp-server-sse.version>1.5.3</quarkus-mcp-server-sse.version>
+        <quarkus-mcp-server-sse.version>1.6.0</quarkus-mcp-server-sse.version>
         <camel-catalog.version>4.14.0</camel-catalog.version>
 
         <quarkus.container-image.registry>quay.io</quarkus.container-image.registry>
