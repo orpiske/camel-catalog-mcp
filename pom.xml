@@ -12,7 +12,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/orpiske/camel-catalog-mcp.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/orpiske/camel-catalog-mcp.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/orpiske/camel-catalog-mcp.git</developerConnection>
         <url>https://github.com/orpiske/camel-catalog-mcp</url>
         <tag>HEAD</tag>
     </scm>
